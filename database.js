@@ -30,15 +30,16 @@ const db = new sqlite3.Database(DB_SOURCE, (err) => {
         )`, (err) => {
             if (err) {/*tabel sudah ada*/} else {
                 const insert = `INSERT INTO directors (name, birthYear) VALUES (?,?)`;
-                //db.run(insert, ["Bong Joon-ho", 1969]);
-                //db.run(insert, ["Christopher Nolan", 1970]);
+                // db.run(insert, ["Bong Joon-ho", 1969]);
+                // db.run(insert, ["Christopher Nolan", 1970]);
             }
         });
 
         db.run (`CREATE TABLE IF NOT EXISTS users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            role TEXT NOT NULL DEFAULT 'user'
             )`, (err) => {
                 if (err) {
                     console.error("Gagal membuat tabel users:", err.message);
