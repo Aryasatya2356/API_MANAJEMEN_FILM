@@ -16,7 +16,7 @@ app.use(express.json());
 
 //Routes
 app.get('/status', (req, res) => {
-    res.json({ ok: true, service: 'film-api' });
+    res.json({ ok: true, service: 'film-api_punya arya' });
 });
 
 //auth routes (refactored for pg)
