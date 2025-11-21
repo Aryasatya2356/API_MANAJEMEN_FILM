@@ -1,11 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const db = require(' ./db.js');
+const db = require('./db.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { authenticationToken, authorizeRole } =
-require('./middleware/auth.js');
+const { authenticationToken, authorizeRole } = require('./middleware/auth.js');
 
 const app = express();
 const PORT = process.env.PORT || 3300;
@@ -45,9 +44,9 @@ app.use((req, res) => {
     res.status(404).json({ error: 'Rute tidak ditemukan' });
 });
 
-app.use((req, res) => {
-    console.error('[SERVER ERROR]', err.stack);
-    res.status(500).json({ error: 'Terjadi kesalahan pada server' });
+app.use((err,req,res,next) =>{ 
+    console.error('[SERVERERROR]',err.stack); 
+    res.status(500).json({error:'Terjadikesalahanpadaserver'}); 
 });
 
 app.listen(PORT, '0.0.0.0', () => {
