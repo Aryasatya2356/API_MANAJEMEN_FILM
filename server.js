@@ -4,7 +4,7 @@ const cors = require('cors');
 const db = require('./db.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { authenticationToken, authorizeRole } = require('./middleware/auth.js');
+const { authenticateToken, authorizeRole,  } = require('./middleware/auth.js');
 
 const app = express();
 const PORT = process.env.PORT || 3300;
@@ -103,7 +103,7 @@ app.get('/movies/:id', async (req, res, next) => {
     }
 });
 
-app.post('/movies', authenticationToken, async (req, res, next) => {
+app.post('/movies', authenticateToken, async (req, res, next) => {
     const { title, director_id, year } = req.body;
     if (!title || !director_id || !year) {
         return res.status(400).json({ error: 'title, director_id, year wajib diisi' });
@@ -117,7 +117,7 @@ app.post('/movies', authenticationToken, async (req, res, next) => {
     }
 });
 
-app.put('/movies/:id', [authenticationToken, authorizeRole('admin')], async (req, res, next) => {
+app.put('/movies/:id', [authenticateToken, authorizeRole('admin')], async (req, res, next) => {
     const { title, director_id, year } = req.body;
     const sql = 'UPDATE movies SET title = $1, director_id = $2, year = $3 WHERE id = $4 RETURNING *';
     try {
@@ -131,7 +131,7 @@ app.put('/movies/:id', [authenticationToken, authorizeRole('admin')], async (req
     }
 });
 
-app.delete('/movies/:id', [authenticationToken, authorizeRole('admin')], async (req, res, next) => {
+app.delete('/movies/:id', [authenticateToken, authorizeRole('admin')], async (req, res, next) => {
     const sql = 'DELETE FROM movies WHERE id = $1 RETURNING *';
     try {
         const result = await db.query(sql, [req.params.id]);
